@@ -10,5 +10,5 @@ jobs:
     steps:
       - run: curl -fsSL https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | UNITY_CLI_CHANNEL=beta bash
       - run: unity --version
-      - run: cd ProjectSettings
+      - run: cd unityItchTest
       - run: unity build --output-path ./build/game --profile ./Assets/Settings/Build\ Profiles/Web\ -\ Desktop\ -\ Release.asset
