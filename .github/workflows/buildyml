@@ -1,0 +1,12 @@
+name: Itch Build project
+
+on: [push, pull_request]
+  branches: 
+    - main
+jobs:
+  BuildForItch:
+    name: Build for Itch
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: unity build --output-path ./build/game --profile ./Assets/Settings/Build\ Profiles/Web\ -\ Desktop\ -\ Release.asset
