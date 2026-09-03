@@ -6,5 +6,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: curl -fsSL https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | UNITY_CLI_CHANNEL=beta bash
-      - run: ls
+      - run: cd ..
       - run: unity build --output-path ./build/game --profile ./Assets/Settings/Build\ Profiles/Web\ -\ Desktop\ -\ Release.asset
