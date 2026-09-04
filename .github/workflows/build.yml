@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v3
       - run: curl -fsSL https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | UNITY_CLI_CHANNEL=beta bash
       - run: unity auth login --client-id $UNITY_SERVICE_ACCOUNT_ID --client-secret $UNITY_SERVICE_ACCOUNT_SECRET
+      - run: date -s "6 MAR 2025 18:00:00"
       - run: echo $UNITY_LICENSE > Unity_lic.ulf
       - run: cat Unity_lic.ulf
       - run: unity license activate --file Unity_lic.ulf
