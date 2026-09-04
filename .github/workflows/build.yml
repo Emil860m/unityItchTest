@@ -14,6 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - run: curl -fsSL https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | UNITY_CLI_CHANNEL=beta bash
-      - run: unity auth login --client-id --client-secret
+      - run: unity auth login --client-secret
       - run: unity license status
 #      - run: unity build --output-path ./build/game --profile ./Assets/Settings/Build\ Profiles/Web\ -\ Desktop\ -\ Release.asset --allow-install
