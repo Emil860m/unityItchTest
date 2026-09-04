@@ -12,10 +12,11 @@ jobs:
       deployment: false
     env:
       UNITY_SERVICE_ACCOUNT_SECRET: ${{ secrets.UNITY_SERVICE_ACCOUNT_SECRET }}
+      UNITY_SERVICE_ACCOUNT_ID: b775fe97-2890-4962-8a41-44aa9c85f397
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - run: curl -fsSL https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | UNITY_CLI_CHANNEL=beta bash
-      - run: unity auth login --client-id b775fe97-2890-4962-8a41-44aa9c85f397 --client-secret $UNITY_SERVICE_ACCOUNT_SECRET
+      - run: unity auth login --client-id $UNITY_SERVICE_ACCOUNT_ID --client-secret $UNITY_SERVICE_ACCOUNT_SECRET
       - run: unity license status
 #      - run: unity build --output-path ./build/game --profile ./Assets/Settings/Build\ Profiles/Web\ -\ Desktop\ -\ Release.asset --allow-install
