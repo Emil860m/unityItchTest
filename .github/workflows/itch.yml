@@ -1,0 +1,17 @@
+name: Actions 😎
+
+on: [push, pull_request]
+
+jobs:
+  deployToItch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get butler
+        run: curl --output butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+      - name: unzip
+        run: unzip butler.zip -d ./butler
+      - run: chmod +x ./butler/butler
