@@ -57,14 +57,11 @@ jobs:
           name: Build
           path: build
       - run: ls
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Get butler
         run: wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O butler-linux-amd64.zip
       - name: unzip
         run: unzip butler-linux-amd64.zip
       - run: chmod +x butler
       - run: ./butler login
+      - run: ls
       - run: ./butler push build im-xura/test:HTML
