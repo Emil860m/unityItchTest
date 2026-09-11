@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Get butler
-        run: wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O
+        run: wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O butler-linux-amd64.zip
       - run: ls
       - name: unzip
         run: file butler-linux-amd64.zip
