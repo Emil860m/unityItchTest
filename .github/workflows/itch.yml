@@ -16,4 +16,4 @@ jobs:
       - name: unzip
         run: unzip butler-linux-amd64.zip
       - run: chmod +x butler
-      - run: ./butler login
+      - run: ./butler login --help
