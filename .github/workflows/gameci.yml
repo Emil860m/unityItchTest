@@ -36,22 +36,34 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: Build
-          path: build
+          path: build/webgl
   deployToItch:
     needs: [build]
     runs-on: ubuntu-latest
+    environment:
+      name: itch
+      deployment: false
+    env:
+      BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Download StandaloneWindows64 Artifact
+      - name: Download webgl Artifact
         uses: actions/download-artifact@v4
         with:
-          name: Build-StandaloneWindows64
-          path: build/StandaloneWindows64
+          name: Build
+          path: build/webgl
+      - run: ls
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Get butler
-        run: curl --output butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+        run: wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O butler-linux-amd64.zip
       - name: unzip
-        run: unzip butler.zip -d ./butler
-      - run: chmod +x ./butler/butler
+        run: unzip butler-linux-amd64.zip
+      - run: chmod +x butler
+      - run: ./butler login
+      - run: butler push  im-xura/test:HTML
