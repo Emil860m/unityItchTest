@@ -1,10 +1,13 @@
-name: Actions 😎
+name: Build and push to itch
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-    name: Build my project ✨
+    name: Build my project
     runs-on: ubuntu-latest
     steps:
       # Checkout
@@ -31,8 +34,6 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
-      - run: cd build
-      - run: ls
       # Output
       - uses: actions/upload-artifact@v4
         with:
@@ -43,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: itch
-      deployment: false
+      deployment: true
     env:
       BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
     steps:
@@ -63,5 +64,4 @@ jobs:
         run: unzip butler-linux-amd64.zip
       - run: chmod +x butler
       - run: ./butler login
-      - run: ls
       - run: ./butler push build im-xura/test:HTML
