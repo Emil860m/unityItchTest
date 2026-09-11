@@ -11,8 +11,8 @@ jobs:
         with:
           fetch-depth: 0
       - name: Get butler
-        run: curl -LO https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+        run: wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
       - run: ls
       - name: unzip
-        run: file butler.zip
+        run: file butler-linux-amd64.zip
       - run: chmod +x butler
