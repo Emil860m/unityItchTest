@@ -67,4 +67,4 @@ jobs:
         run: unzip butler-linux-amd64.zip
       - run: chmod +x butler
       - run: ./butler login
-      - run: ./butler push build/webgl im-xura/test:HTML
+      - run: ./butler push build im-xura/test:HTML
