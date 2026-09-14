@@ -44,8 +44,8 @@ jobs:
       # Output
       - uses: actions/upload-artifact@v4
         with:
-          name: Build
-          path: build
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
   deployToItch:
     needs: [build]
     runs-on: ubuntu-latest
@@ -64,8 +64,8 @@ jobs:
       - name: Download webgl Artifact
         uses: actions/download-artifact@v4
         with:
-          name: Build
-          path: build
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
       - run: ls
       - name: Get butler
         run: wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O butler-linux-amd64.zip
@@ -73,4 +73,4 @@ jobs:
         run: unzip butler-linux-amd64.zip
       - run: chmod +x butler
       - run: ./butler login
-      - run: ./butler push build $ITCH_USER/$ITCH_PAGE:HTML
+      - run: ./butler push build/WebGL $ITCH_USER/$ITCH_PAGE:HTML
