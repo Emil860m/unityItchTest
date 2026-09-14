@@ -1,11 +1,21 @@
-name: Actions 😎
+name: Build and push to itch
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-    name: Build my project ✨
+    name: Build my project
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - WebGL
     steps:
       # Checkout
       - name: Checkout repository
@@ -30,41 +40,49 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: WebGL
-      - run: cd build
-      - run: ls
+          targetPlatform: ${{ matrix.targetPlatform }}
       # Output
       - uses: actions/upload-artifact@v4
         with:
-          name: Build
-          path: build
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
   deployToItch:
     needs: [build]
     runs-on: ubuntu-latest
     environment:
       name: itch
-      deployment: false
+      deployment: true
     env:
       BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+      ITCH_USER: ${{ secrets.ITCH_USER }}
+      ITCH_PAGE: ${{ secrets.ITCH_PAGE }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build-StandaloneWindows64
+          path: build/StandaloneWindows64
+      - name: Download linux Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build-StandaloneLinux64
+          path: build/StandaloneLinux64
       - name: Download webgl Artifact
         uses: actions/download-artifact@v4
         with:
-          name: Build
-          path: build
+          name: Build-WebGL
+          path: build/WebGL
       - run: ls
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Get butler
         run: wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O butler-linux-amd64.zip
       - name: unzip
         run: unzip butler-linux-amd64.zip
       - run: chmod +x butler
       - run: ./butler login
-      - run: ./butler push build im-xura/test:HTML
+      - run: ./butler push build/WebGL $ITCH_USER/$ITCH_PAGE:HTML
+      - run: ./butler push build/StandaloneWindows64 $ITCH_USER/$ITCH_PAGE:win
+      - run: ./butler push build/StandaloneLinux64 $ITCH_USER/$ITCH_PAGE:linux
