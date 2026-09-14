@@ -9,6 +9,13 @@ jobs:
   build:
     name: Build my project
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - WebGL
     steps:
       # Checkout
       - name: Checkout repository
@@ -33,7 +40,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: WebGL
+          targetPlatform: ${{ matrix.targetPlatform }}
       # Output
       - uses: actions/upload-artifact@v4
         with:
